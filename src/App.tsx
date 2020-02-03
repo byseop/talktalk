@@ -1,16 +1,10 @@
 import React from 'react';
 import './App.css';
-import { Switch, Route } from 'react-router-dom';
-import MainConatiner from './routes/main';
-import LoginContainer from './routes/login';
-
+import RouteContainer from './components/routes'
 const App = () => {
   return (
     <div>
-      <Switch>
-        <Route path="/" exact component={MainConatiner} />
-        <Route path="/login" component={LoginContainer} />
-      </Switch>
+      <RouteContainer />
     </div>
   )
 };
