@@ -4,7 +4,7 @@ export async function getUser(token: string) {
   const response = await axios({
     method: 'get',
     baseURL: 'https://api.github.com',
-    url: `/user`,
+    url: '/user',
     headers: {
       'Authorization': `token ${token}`
     }
