@@ -1,2 +1,3 @@
 /*    /index.html   200
-/https://github.com/* https://github.com/:splat 200
+/https://github.com/*   https://github.com/:splat   200
+/github.com path=:path *   https://github.com/:path   200
