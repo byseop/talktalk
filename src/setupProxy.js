@@ -5,6 +5,10 @@ module.exports = function(app) {
     proxy('/login/oauth/access_token', {
       target: 'https://github.com',
       changeOrigin: true
+    }),
+    proxy('/user', {
+      target: 'https://api.github.com',
+      changeOrigin: true
     })
   );
 };
