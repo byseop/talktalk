@@ -17,3 +17,6 @@
   for = "/*"
     [headers.values]
     Access-Control-Allow-Origin = "*"
+
+[build]
+  functions = "src/functions"

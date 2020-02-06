@@ -2,9 +2,9 @@ import React, { useCallback, useEffect } from 'react';
 import Login from './Login';
 import { useLocation } from 'react-router-dom';
 import qs from 'qs';
-import { getUserToken } from 'api/github/oauth';
+import { getUserToken } from 'src/api/github/oauth';
 import { useDispatch } from 'react-redux';
-import { loginStart } from 'modules/login';
+import { loginStart } from 'src/modules/login';
 
 export default function LoginContainer() {
   const location = useLocation();

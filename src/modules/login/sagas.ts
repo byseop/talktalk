@@ -1,4 +1,4 @@
-import { getUser } from 'api/github/user';
+import { getUser } from 'src/api/github/user';
 import { put, call, takeEvery } from 'redux-saga/effects';
 import { LOGIN_START, loginStart, loginSuccess, loginFail } from './actions';
 import { UserDataTypes } from './types';
