@@ -1,6 +1,5 @@
-import fetch from 'node-fetch';
+const fetch = require('node-fetch');
 
-console.log('123')
 exports.handler = async function(event, context) {
   const { REACT_APP_CLIENT_ID, REACT_APP_CLIENT_SECRET } = process.env;
   if (event.httpMethod !== 'POST') {
