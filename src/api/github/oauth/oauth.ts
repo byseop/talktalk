@@ -16,7 +16,7 @@ export async function getUserToken(code: string) {
 
   // const response = await axios({ ...config });
 
-  const response = await fetch('/.netlify/functions/get-access-token');
+  const response = await fetch('src/functions/get-access-token');
 
   try {
     const result = await response.json();
