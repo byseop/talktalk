@@ -16,6 +16,7 @@
     "@types/redux-saga": "^0.10.5",
     "axios": "^0.19.2",
     "http-proxy-middleware": "^0.20.0",
+    "netlify-lambda": "^1.6.3",
     "qs": "^6.9.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
@@ -31,7 +32,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "start:lambda": "netlify-lambda serve .netlify/functions/get-access-token",
+    "build:lambda": "netlify-lambda build .netlify/functions/get-access-token",
+    "prod": "yarn build; yarn build:lambda"
   },
   "eslintConfig": {
     "extends": "react-app"

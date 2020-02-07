@@ -19,4 +19,5 @@
     Access-Control-Allow-Origin = "*"
 
 [build]
-  functions = "src/functions"
+  functions = "lambda"
+  Command = "yarn prod"

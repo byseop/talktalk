@@ -1,29 +1,23 @@
 import axios, { AxiosRequestConfig } from 'axios';
 
+const { REACT_APP_CLIENT_ID, REACT_APP_CLIENT_SECRET } = process.env;
+
 export async function getUserToken(code: string) {
-  // let config: AxiosRequestConfig = {
-  //   method: 'post',
-  //   url: '/login/oauth/access_token',
-  //   params: {
-  //     client_id: REACT_APP_CLIENT_ID,
-  //     client_secret: REACT_APP_CLIENT_SECRET,
-  //     code
-  //   }
-  // };
+  let config: AxiosRequestConfig = {
+    url: '/.netlify/functions/get-access-token',
+    params: {
+      client_id: REACT_APP_CLIENT_ID,
+      client_secret: REACT_APP_CLIENT_SECRET,
+      code
+    }
+  };
 
-  // process.env.NODE_ENV === 'production' &&
-  //   (config = { ...config, baseURL: 'https://github.com' });
-
-  // const response = await axios({ ...config });
-
-  const response = await fetch('src/functions/get-access-token');
+  const response = await axios({ ...config });
 
   try {
-    const result = await response.json();
-    console.log(result)
-    return result;
+    console.log(response.data)
+    return response.data;
   } catch (e) {
-    console.log('error-')
     console.error(e);
   }
 }
