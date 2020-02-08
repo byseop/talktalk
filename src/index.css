@@ -3,7 +3,6 @@ body {
   font-family: 'Noto Sans KR', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
   background: linear-gradient(0.25turn, #a292c0, #353f94) no-repeat;
 }
 

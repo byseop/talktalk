@@ -1,14 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import loginBackground from 'src/assets/images/login/login_bg.jpg';
+import { animated } from 'react-spring';
 
 const MainVisual = styled.div`
   width: 100vw;
   height: 100vh;
-  background: url(${loginBackground}) no-repeat center center;
   background-size: cover;
   position: relative;
-  filter: blur(20px);
   padding: 3rem;
   box-sizing: border-box;
 `;
@@ -53,13 +51,17 @@ const LoginWrap = styled.div`
   }
 `;
 
-export default function Main() {
+type MainProps = {
+  loginSuccessStyle: any;
+}
+
+export default function Main({ loginSuccessStyle }: MainProps) {
   const { REACT_APP_CLIENT_ID } = process.env;
   return (
     <>
       <MainVisual />
       <LoginWrap>
-        <div className="login_box">
+        <animated.div className="login_box" style={loginSuccessStyle}>
           <h1>TALK-TALK</h1>
           <div className="login_button_wrap">
             <div className="login_button">
@@ -70,7 +72,7 @@ export default function Main() {
               </a>
             </div>
           </div>
-        </div>
+        </animated.div>
       </LoginWrap>
     </>
   );
