@@ -18,9 +18,6 @@ export default function MainConatiner() {
     config: {
       easing: easeExpOut,
       duration: 2000
-    },
-    onRest: () => {
-      data && setLogin(true);
     }
   }));
 
@@ -39,7 +36,10 @@ export default function MainConatiner() {
       setOpacity({
         opacity: 0,
         from: { opacity: 1 },
-        delay: 1000
+        delay: 1000,
+        onRest: () => {
+          data && setLogin(true);
+        }
       });
     }
   }, [data, setOpacity]);
