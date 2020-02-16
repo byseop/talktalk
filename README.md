@@ -19,6 +19,7 @@ Following items are core technologies use in this project:
 - Github oAuth Login  
 - Netlify  
 - Netlify Lambda Function  
+- Microsoft Fluent UI  
 - Will use Cypress for testing  
   
 ## Running on your machine  

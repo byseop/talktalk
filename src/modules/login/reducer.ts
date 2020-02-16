@@ -8,7 +8,7 @@ import {
   ALREADY_LOGIN
 } from './actions';
 
-type State = {
+export type State = {
   loading: boolean;
   data: UserDataTypes | null;
   error: AxiosError | null;
