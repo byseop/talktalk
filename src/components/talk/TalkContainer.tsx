@@ -16,6 +16,8 @@ export default function TalkContainer() {
     const localStorageUser = window.localStorage.getItem('lUser');
     if (localStorageUser) {
       dispatch(alreadyLogin(JSON.parse(localStorageUser)));
+    } else {
+      window.location.href = '/';
     }
   }, [dispatch]);
 
