@@ -20,7 +20,7 @@ export default function MainConatiner() {
       duration: 2000
     },
     onRest: () => {
-      setLogin(true);
+      data && setLogin(true);
     }
   }));
 
