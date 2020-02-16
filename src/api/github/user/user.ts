@@ -12,6 +12,7 @@ export async function getUser(token: string) {
 
   try {
     const data = response.data;
+    window.localStorage.setItem('lUser', JSON.stringify(data));
     return data;
   } catch (e) {
     console.error(e);

@@ -11,23 +11,24 @@ Website link: https://talktalk.netlify.com
   
 Following items are core technologies use in this project:
 
-- Typescript 3.7 <=  
+- Typescript >= 3.7 
 - React  
 - Redux  
 - CSS in JS (styled-components)  
 - Google Web Fonts  
-- Github oAuth login  
+- Github oAuth Login  
 - Netlify  
-- Netlify Lambda function  
-- Will use cypress for testing  
+- Netlify Lambda Function  
+- Microsoft Fluent UI  
+- Will use Cypress for testing  
   
 ## Running on your machine  
 This instruction will get you copy of the project up and running on your machine for development or testing purposes.  
   
 ### Preparation  
-- Node.js v10.17.0 <=  
+- Node >= 10.17.0  
 - yarn
-- Netlify account  
+- Netlify Account  
 - Github oAuth login app
   
 ### Installation  

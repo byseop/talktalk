@@ -4,10 +4,11 @@ import {
   LoginActionTypes,
   LOGIN_START,
   LOGIN_SUCCESS,
-  LOGIN_FAIL
+  LOGIN_FAIL,
+  ALREADY_LOGIN
 } from './actions';
 
-type State = {
+export type State = {
   loading: boolean;
   data: UserDataTypes | null;
   error: AxiosError | null;
@@ -41,6 +42,11 @@ export default function user(
         loading: false,
         error: action.payload
       };
+    case ALREADY_LOGIN:
+      return {
+        ...state,
+        data: action.payload
+      }
     default:
       return state;
   }
