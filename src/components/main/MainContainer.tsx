@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSpring } from 'react-spring';
 import { easeExpOut } from 'd3-ease';
+import { Redirect } from 'react-router-dom';
 import { alreadyLogin } from 'src/modules/login';
 import { RootState } from 'src/modules';
 import Main from './Main';
@@ -10,13 +11,17 @@ export default function MainConatiner() {
   const dispatch = useDispatch();
   const login = useSelector((state: RootState) => state.user);
   const { data } = login;
+  const [isLogin, setLogin] = useState<boolean>(false);
 
   const [opacity, setOpacity] = useSpring(() => ({
-    to: { opacity: 1 },
+    opacity: 1,
     config: {
       easing: easeExpOut,
       duration: 2000
     },
+    onRest: () => {
+      setLogin(true);
+    }
   }));
 
   useEffect(() => {
@@ -30,8 +35,19 @@ export default function MainConatiner() {
 
   useEffect(() => {
     // When user login, run animation
-    data && setOpacity({ to: { opacity: 0 }, delay: 1000 });
+    if (data) {
+      setOpacity({
+        opacity: 0,
+        from: { opacity: 1 },
+        delay: 1000
+      });
+    }
   }, [data, setOpacity]);
 
-  return <Main loginSuccessStyle={opacity} />;
+  return (
+    <>
+      <Main loginSuccessStyle={opacity} />
+      {isLogin && <Redirect to="/talk" />}
+    </>
+  );
 }
