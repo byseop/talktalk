@@ -7,7 +7,7 @@ export async function getUser(token: string) {
     url: '/user',
     headers: {
       'Authorization': `token ${token}`
-    }
+    },
   });
 
   try {

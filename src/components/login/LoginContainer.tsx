@@ -1,15 +1,18 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import Login from './Login';
 import { useLocation, Redirect } from 'react-router-dom';
-import qs from 'qs';
+import queryParams from 'src/utils/queryParams';
 import { getUserToken } from 'src/api/github/oauth';
 import { useDispatch } from 'react-redux';
 import { loginStart } from 'src/modules/login';
+import { useSelector } from 'react-redux';
+import { RootState } from 'src/modules';
 
 export default function LoginContainer() {
   const location = useLocation();
-  const query = qs.parse(location.search, { ignoreQueryPrefix: true });
+  const code = queryParams(location.search, 'code');
 
+  const { data } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
 
   const [isLogin, setLogin] = useState<boolean>(false);
@@ -18,8 +21,8 @@ export default function LoginContainer() {
     async (code: string) => {
       const data = await getUserToken(code);
       try {
-        const tokenData = qs.parse(data, { ignoreQueryPrefix: true });
-        dispatch(loginStart(tokenData.access_token));
+        const tokenData = queryParams(data, 'access_token');
+        dispatch(loginStart(tokenData as string));
       } catch (e) {
         console.error(e);
       }
@@ -28,15 +31,18 @@ export default function LoginContainer() {
   );
 
   useEffect(() => {
-    if (query.code) {
+    if (code) {
       // If a query exists, you get a token.
-      getUserTokenData(query.code);
-      setLogin(true);
+      getUserTokenData(code);
     } else {
       // Else back to '/'.
       window.location.href = '/';
     }
-  }, [query.code, getUserTokenData]);
+  }, [code, getUserTokenData]);
+
+  useEffect(() => {
+    data && setLogin(true);
+  }, [data]);
 
   return (
     <>
