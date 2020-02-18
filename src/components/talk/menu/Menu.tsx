@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { UserDataTypes } from 'src/modules/login/types';
-import { animated } from 'react-spring';
+import { animated, useTransition } from 'react-spring';
 import { Menu as FluentMenu } from '@fluentui/react';
+import { easeExpOut } from 'd3-ease';
 
 const MenuWrap = styled(animated.div)`
   width: 300px;
@@ -56,33 +57,53 @@ const menus = ['Chat', 'Guide'];
 
 type MenuPropsType = {
   user: UserDataTypes;
-  menuSpring: any;
 };
 
-export default function Menu({ user, menuSpring }: MenuPropsType) {
+export default function Menu({ user }: MenuPropsType) {
   const { login, name, avatar_url, html_url } = user;
+  const menuTransition = useTransition(user, null, {
+    from: {
+      transform: 'translateX(-100%)'
+    },
+    enter: {
+      transform: 'translateX(0%)'
+    },
+    leave: {
+      transform: 'translateX(0)'
+    },
+    config: {
+      easing: easeExpOut,
+      duration: 1000
+    }
+  })
   return (
-    <MenuWrap style={menuSpring}>
-      <div className="top">
-        <div className="user_info_wrap">
-          <div className="user_profile_img">
-            <a href={html_url} target="blank">
-              <img src={avatar_url} alt={login} />
-            </a>
-          </div>
-          <div className="user_info">
-            <div className="login_id">
-              <p>{login}</p>
+    <>
+      {menuTransition.map(({ item, key, props }) =>
+        item ? (
+          <MenuWrap key={key} style={props}>
+            <div className="top">
+              <div className="user_info_wrap">
+                <div className="user_profile_img">
+                  <a href={html_url} target="blank">
+                    <img src={avatar_url} alt={login} />
+                  </a>
+                </div>
+                <div className="user_info">
+                  <div className="login_id">
+                    <p>{login}</p>
+                  </div>
+                  <div className="login_name">
+                    <span>{name}</span>
+                  </div>
+                </div>
+              </div>
+              <div className="nav">
+                <FluentMenu items={menus} pointing vertical primary />
+              </div>
             </div>
-            <div className="login_name">
-              <span>{name}</span>
-            </div>
-          </div>
-        </div>
-        <div className="nav">
-          <FluentMenu items={menus} pointing vertical primary />
-        </div>
-      </div>
-    </MenuWrap>
+          </MenuWrap>
+        ) : null
+      )}
+    </>
   );
 }
