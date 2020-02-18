@@ -1,9 +1,74 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { UserDataTypes } from 'src/modules/login/types';
 import { animated, useTransition } from 'react-spring';
-import { Menu as FluentMenu } from '@fluentui/react';
+import { Menu as FluentMenu, Button } from '@fluentui/react';
 import { easeExpOut } from 'd3-ease';
+import AlertContainer from 'src/components/common/alert';
+
+const menus = ['Chat', 'Guide'];
+
+type MenuPropsType = {
+  user: UserDataTypes;
+  handleLogout: () => void;
+};
+
+export default function Menu({ user, handleLogout }: MenuPropsType) {
+  const { login, name, avatar_url, html_url } = user;
+  const menuTransition = useTransition(user, null, {
+    from: {
+      transform: 'translateX(-100%)'
+    },
+    enter: {
+      transform: 'translateX(0%)'
+    },
+    leave: {
+      transform: 'translateX(0)'
+    },
+    config: {
+      easing: easeExpOut,
+      duration: 1000
+    }
+  });
+
+  const [logoutAlert, setLogoutAlert] = useState<boolean>(false);
+
+  return (
+    <>
+      {menuTransition.map(({ item, key, props }) =>
+        item ? (
+          <MenuWrap key={key} style={props}>
+            <div className="top">
+              <div className="user_info_wrap">
+                <div className="user_profile_img">
+                  <a href={html_url} target="blank">
+                    <img src={avatar_url} alt={login} />
+                  </a>
+                </div>
+                <div className="user_info">
+                  <div className="login_id">
+                    <p>{login}</p>
+                  </div>
+                  <div className="login_name">
+                    <span>{name}</span>
+                  </div>
+                </div>
+              </div>
+              <div className="nav">
+                <FluentMenu items={menus} pointing vertical primary />
+              </div>
+            </div>
+            <div className="bottom">
+              <Button content="Logout" onClick={() => setLogoutAlert(true)} fluid text />
+            </div>
+          </MenuWrap>
+        ) : null
+      )}
+      
+      <AlertContainer visible={logoutAlert} setVisible={setLogoutAlert} title={"로그아웃"} des={"로그아웃 하시겠습니까?"} cancelable onClose={handleLogout} />
+    </>
+  );
+}
 
 const MenuWrap = styled(animated.div)`
   width: 300px;
@@ -51,59 +116,8 @@ const MenuWrap = styled(animated.div)`
       }
     }
   }
+
+  .bottom {
+    width: 100%;
+  }
 `;
-
-const menus = ['Chat', 'Guide'];
-
-type MenuPropsType = {
-  user: UserDataTypes;
-};
-
-export default function Menu({ user }: MenuPropsType) {
-  const { login, name, avatar_url, html_url } = user;
-  const menuTransition = useTransition(user, null, {
-    from: {
-      transform: 'translateX(-100%)'
-    },
-    enter: {
-      transform: 'translateX(0%)'
-    },
-    leave: {
-      transform: 'translateX(0)'
-    },
-    config: {
-      easing: easeExpOut,
-      duration: 1000
-    }
-  })
-  return (
-    <>
-      {menuTransition.map(({ item, key, props }) =>
-        item ? (
-          <MenuWrap key={key} style={props}>
-            <div className="top">
-              <div className="user_info_wrap">
-                <div className="user_profile_img">
-                  <a href={html_url} target="blank">
-                    <img src={avatar_url} alt={login} />
-                  </a>
-                </div>
-                <div className="user_info">
-                  <div className="login_id">
-                    <p>{login}</p>
-                  </div>
-                  <div className="login_name">
-                    <span>{name}</span>
-                  </div>
-                </div>
-              </div>
-              <div className="nav">
-                <FluentMenu items={menus} pointing vertical primary />
-              </div>
-            </div>
-          </MenuWrap>
-        ) : null
-      )}
-    </>
-  );
-}

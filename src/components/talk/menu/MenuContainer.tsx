@@ -7,5 +7,10 @@ type MainContainerPropsType = {
 };
 
 export default function MenuContainer({ user }: MainContainerPropsType) {
-  return <Menu user={user} />;
+  const handleLogout = () => {
+    window.localStorage.removeItem('lUser');
+    window.location.href = '/';
+  }
+
+  return <Menu user={user} handleLogout={handleLogout} />;
 }
