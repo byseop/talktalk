@@ -8,9 +8,9 @@
  *     | URLSearchParams
  *     | undefined)} query
  * @param {string} attr
- * @returns
+ * @returns {(string | null)}
  */
-export default function queryParams(
+export default function queryParams (
   query:
     | string
     | string[][]
@@ -18,7 +18,7 @@ export default function queryParams(
     | URLSearchParams
     | undefined,
   attr: string
-) {
+): string | null {
   const params = new URLSearchParams(query);
   return params.get(attr);
 }
