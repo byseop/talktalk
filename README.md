@@ -55,11 +55,17 @@ REACT_APP_BASE_HOST = http://localhost:YOUR_LOCAL_HOST
 REACT_APP_CLIENT_ID = YOUR GITHUB OAUTH APP CLIENT ID
 REACT_APP_CLIENT_SECRET = YOUR GITHUB OAUTH APP CLIENT SECRET
 ```
-4. Start netlify lambda development server  
+4. Set your site ID to <code>.netlify/state.json</code>
+```
+{
+	"siteId": "your-site-id-1234-5678"
+}
+```
+5. Start netlify lambda development server  
 ```
 $ yarn start:lambda
 ```  
-5. Start frontend development server  
+6. Start frontend development server  
 ```
 $ yarn start
 ```

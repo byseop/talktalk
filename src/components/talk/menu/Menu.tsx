@@ -2,11 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { UserDataTypes } from 'src/modules/login/types';
 import { animated, useTransition } from 'react-spring';
-import { Menu as FluentMenu, Button } from '@fluentui/react';
 import { easeExpOut } from 'd3-ease';
-import AlertContainer from 'src/components/common/alert';
-
-const menus = ['Chat', 'Guide'];
+import AlertContainer from 'src/components/common/Alert';
 
 type MenuPropsType = {
   user: UserDataTypes;
@@ -55,11 +52,15 @@ export default function Menu({ user, handleLogout }: MenuPropsType) {
                 </div>
               </div>
               <div className="nav">
-                <FluentMenu items={menus} pointing vertical primary />
+                <ul>
+                  <li className="menu_list"><i className="fas fa-comments"></i> 채팅방</li>
+                  <li className="menu_list"><i className="fas fa-users"></i> 친구</li>
+                  <li className="menu_list"><i className="fas fa-search"></i> 검색</li>
+                </ul>
               </div>
             </div>
             <div className="bottom">
-              <Button content="Logout" onClick={() => setLogoutAlert(true)} fluid text />
+              <button className="logout" onClick={() => setLogoutAlert(true)}>로그아웃</button>
             </div>
           </MenuWrap>
         ) : null
@@ -115,9 +116,41 @@ const MenuWrap = styled(animated.div)`
         }
       }
     }
+
+    .nav {
+      margin-top: 3rem;
+      ul {
+        list-style: none;
+        padding: 0;
+        li {
+          color: #fff;
+          font-size: 1.125rem;
+          text-align: center;
+          padding: 1rem 0;
+          cursor: pointer;
+          i {
+            font-size: 1.875rem;
+            margin-right: 0.5rem;
+            vertical-align: middle;
+          }
+        }
+      }
+    }
   }
 
   .bottom {
     width: 100%;
+
+    .logout {
+      display: block;
+      background: none;
+      width: 100%;
+      padding: 0.5rem;
+      border: none;
+      color: #fff;
+      font-size: 1.125rem;
+      cursor: pointer;
+      outline: none;
+    }
   }
 `;
