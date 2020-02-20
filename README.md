@@ -42,7 +42,7 @@ $ cd talktalk
 $ yarn
 ```
 3. Rename .env.exmaple to .env.development and .env.production  
-If you are concerned about uploading this file to your product, update your Netlife preferences.
+If you are concerned about uploading this file to your product, update your Netlify preferences(env).
 ```
 # SET .env.development
 # SET .env.production
@@ -55,8 +55,8 @@ REACT_APP_BASE_HOST = http://localhost:YOUR_LOCAL_HOST
 REACT_APP_CLIENT_ID = YOUR GITHUB OAUTH APP CLIENT ID
 REACT_APP_CLIENT_SECRET = YOUR GITHUB OAUTH APP CLIENT SECRET
 ```
-4. Set your site ID to <code>.netlify/state.json</code>
-```
+4. Set your netlify-site ID to <code>.netlify/state.json</code>
+```json
 {
 	"siteId": "your-site-id-1234-5678"
 }
