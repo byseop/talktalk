@@ -19,7 +19,7 @@ const LoginWrap = styled.div`
   .login_box {
     max-width: 400px;
     width: 100vw;
-    background: #1f2f698f;
+    background: none;
     position: relative;
     z-index: 1;
     color: #fff;
@@ -29,7 +29,7 @@ const LoginWrap = styled.div`
     h1 {
       margin: 0;
       font-family: 'Bungee Inline', cursive;
-      color: #dbdbdb;
+      color: #fff;
       font-size: 3rem;
     }
 
@@ -39,7 +39,7 @@ const LoginWrap = styled.div`
       .login_button {
         a {
           font-size: 1.2rem;
-          color: #dbdbdb;
+          color: #fff;
           text-decoration: none;
           
           i {
