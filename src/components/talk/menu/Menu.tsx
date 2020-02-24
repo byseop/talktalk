@@ -74,7 +74,7 @@ export default function Menu({ user, handleLogout }: MenuPropsType) {
 const MenuWrap = styled(animated.div)`
   width: 300px;
   height: 100vh;
-  background: #7491fb;
+  background: #12b886;
   display: flex;
   flex-flow: column wrap;
   justify-content: space-between;
