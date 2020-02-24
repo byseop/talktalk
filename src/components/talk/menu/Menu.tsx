@@ -4,6 +4,8 @@ import { UserDataTypes } from 'src/modules/login/types';
 import { animated, useTransition } from 'react-spring';
 import { easeExpOut } from 'd3-ease';
 import AlertContainer from 'src/components/common/Alert';
+import MenuRoutesContainer from 'src/components/routes/menu';
+import { Link } from 'react-router-dom';
 
 type MenuPropsType = {
   user: UserDataTypes;
@@ -53,20 +55,36 @@ export default function Menu({ user, handleLogout }: MenuPropsType) {
               </div>
               <div className="nav">
                 <ul>
-                  <li className="menu_list"><i className="fas fa-comments"></i> 채팅방</li>
-                  <li className="menu_list"><i className="fas fa-users"></i> 친구</li>
-                  <li className="menu_list"><i className="fas fa-search"></i> 검색</li>
+                  <li className="menu_list">
+                    <Link to="/talk/chatroom"><i className="fas fa-comments"></i> 채팅방</Link>
+                  </li>
+                  <li className="menu_list">
+                    <i className="fas fa-users"></i> 팔로우
+                  </li>
+                  <li className="menu_list">
+                    <i className="fas fa-search"></i> 검색
+                  </li>
                 </ul>
               </div>
             </div>
             <div className="bottom">
-              <button className="logout" onClick={() => setLogoutAlert(true)}>로그아웃</button>
+              <button className="logout" onClick={() => setLogoutAlert(true)}>
+                로그아웃
+              </button>
             </div>
+            <MenuRoutesContainer />
           </MenuWrap>
         ) : null
       )}
-      
-      <AlertContainer visible={logoutAlert} setVisible={setLogoutAlert} title={"로그아웃"} des={"로그아웃 하시겠습니까?"} cancelable onClose={handleLogout} />
+
+      <AlertContainer
+        visible={logoutAlert}
+        setVisible={setLogoutAlert}
+        title={'로그아웃'}
+        des={'로그아웃 하시겠습니까?'}
+        cancelable
+        onClose={handleLogout}
+      />
     </>
   );
 }
@@ -81,6 +99,7 @@ const MenuWrap = styled(animated.div)`
   align-items: center;
   box-sizing: border-box;
   padding: 1.5em;
+  position: relative;
 
   .top {
     width: 100%;
@@ -128,6 +147,10 @@ const MenuWrap = styled(animated.div)`
           text-align: center;
           padding: 1rem 0;
           cursor: pointer;
+          a {
+            color: inherit;
+            text-decoration: none;
+          }
           i {
             font-size: 1.875rem;
             margin-right: 0.5rem;
