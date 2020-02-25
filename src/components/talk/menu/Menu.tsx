@@ -4,8 +4,8 @@ import { UserDataTypes } from 'src/modules/login/types';
 import { animated, useTransition } from 'react-spring';
 import { easeExpOut } from 'd3-ease';
 import AlertContainer from 'src/components/common/Alert';
-import MenuRoutesContainer from 'src/components/routes/menu';
-import { Link } from 'react-router-dom';
+import ChatRoomContainer from './chatRoom';
+import { SelectableMenu } from './types';
 
 type MenuPropsType = {
   user: UserDataTypes;
@@ -22,7 +22,7 @@ export default function Menu({ user, handleLogout }: MenuPropsType) {
       transform: 'translateX(0%)'
     },
     leave: {
-      transform: 'translateX(0)'
+      transform: 'translateX(-100%)'
     },
     config: {
       easing: easeExpOut,
@@ -31,52 +31,63 @@ export default function Menu({ user, handleLogout }: MenuPropsType) {
   });
 
   const [logoutAlert, setLogoutAlert] = useState<boolean>(false);
+  const [selectedMenu, setSelectedMenu] = useState<SelectableMenu>('');
 
   return (
     <>
-      {menuTransition.map(({ item, key, props }) =>
-        item ? (
-          <MenuWrap key={key} style={props}>
-            <div className="top">
-              <div className="user_info_wrap">
-                <div className="user_profile_img">
-                  <a href={html_url} target="blank">
-                    <img src={avatar_url} alt={login} />
-                  </a>
+      <MenuWrap>
+        {menuTransition.map(({ item, key, props }) =>
+          item ? (
+            <MenuInner key={key} style={props}>
+              <div className="top">
+                <div className="user_info_wrap">
+                  <div className="user_profile_img">
+                    <a href={html_url} target="blank">
+                      <img src={avatar_url} alt={login} />
+                    </a>
+                  </div>
+                  <div className="user_info">
+                    <div className="login_id">
+                      <p>{login}</p>
+                    </div>
+                    <div className="login_name">
+                      <span>{name}</span>
+                    </div>
+                  </div>
                 </div>
-                <div className="user_info">
-                  <div className="login_id">
-                    <p>{login}</p>
-                  </div>
-                  <div className="login_name">
-                    <span>{name}</span>
-                  </div>
+                <div className="nav">
+                  <ul>
+                    <li
+                      className="menu_list"
+                      onClick={() => setSelectedMenu('chatroom')}
+                    >
+                      <i className="fas fa-comments"></i> 채팅방
+                    </li>
+                    <li
+                      className="menu_list"
+                      onClick={() => setSelectedMenu('follow')}
+                    >
+                      <i className="fas fa-users"></i> 팔로우
+                    </li>
+                    <li
+                      className="menu_list"
+                      onClick={() => setSelectedMenu('search')}
+                    >
+                      <i className="fas fa-search"></i> 검색
+                    </li>
+                  </ul>
                 </div>
               </div>
-              <div className="nav">
-                <ul>
-                  <li className="menu_list">
-                    <Link to="/talk/chatroom"><i className="fas fa-comments"></i> 채팅방</Link>
-                  </li>
-                  <li className="menu_list">
-                    <i className="fas fa-users"></i> 팔로우
-                  </li>
-                  <li className="menu_list">
-                    <i className="fas fa-search"></i> 검색
-                  </li>
-                </ul>
+              <div className="bottom">
+                <button className="logout" onClick={() => setLogoutAlert(true)}>
+                  로그아웃
+                </button>
               </div>
-            </div>
-            <div className="bottom">
-              <button className="logout" onClick={() => setLogoutAlert(true)}>
-                로그아웃
-              </button>
-            </div>
-            <MenuRoutesContainer />
-          </MenuWrap>
-        ) : null
-      )}
-
+            </MenuInner>
+          ) : null
+        )}
+        <ChatRoomContainer selectedMenu={selectedMenu} />
+      </MenuWrap>
       <AlertContainer
         visible={logoutAlert}
         setVisible={setLogoutAlert}
@@ -89,17 +100,23 @@ export default function Menu({ user, handleLogout }: MenuPropsType) {
   );
 }
 
-const MenuWrap = styled(animated.div)`
+const MenuWrap = styled.div`
   width: 300px;
   height: 100vh;
+`;
+
+const MenuInner = styled(animated.div)`
   background: #12b886;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-flow: column wrap;
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
-  padding: 1.5em;
   position: relative;
+  padding: 1.5em;
+  z-index: 10;
 
   .top {
     width: 100%;

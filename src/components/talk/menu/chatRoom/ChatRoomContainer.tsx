@@ -2,9 +2,14 @@ import React from 'react';
 import ChatRoom from './ChatRoom';
 import * as firebase from 'firebase/app';
 import 'firebase/database';
+import { SelectableMenu } from '../types';
 
-export default function ChatRoomContainer() {
-  const database = firebase.database();
-  console.log(database);
-  return <ChatRoom />;
+type ChatRoomContainerProps = {
+  selectedMenu: SelectableMenu;
+};
+
+export default function ChatRoomContainer({
+  selectedMenu
+}: ChatRoomContainerProps) {
+  return <ChatRoom selectedMenu={selectedMenu} />;
 }
