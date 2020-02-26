@@ -25,7 +25,6 @@ export default function ChatRoom({ selectedMenu }: ChatRoomPropsTypes) {
     }
   });
 
-  console.log(selectedMenu);
   return (
     <>
       {chatRoomTransition.map(({ item, key, props }) =>
