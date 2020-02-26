@@ -12,7 +12,7 @@ export default function useFirebase(path?: string) {
   const database = useDatabase();
   const ref = database.ref(path);
 
-  const initialState = {
+  const initialState: useFirebaseStateTypes = {
     isOn: false,
     loading: false,
     data: null,
@@ -64,10 +64,7 @@ export default function useFirebase(path?: string) {
           error: action.payload
         };
       case FIREBASE_OFF:
-        return {
-          ...state,
-          isOn: false
-        };
+        return initialState;
       default:
         return state;
     }
