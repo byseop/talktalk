@@ -8,6 +8,7 @@ import { loginStart } from 'src/modules/login';
 import { useSelector } from 'react-redux';
 import { RootState } from 'src/modules';
 import useFirebase from 'src/utils/hooks/useFirebase';
+import useDatabase from 'src/utils/hooks/useDatabase';
 
 export default function LoginContainer() {
   const location = useLocation();
@@ -18,8 +19,8 @@ export default function LoginContainer() {
 
   const [isLogin, setLogin] = useState<boolean>(false);
 
-  const [userFirebase, userFirebaseUpdate] = useFirebase('/users');
-  console.log(userFirebase);
+  const database = useDatabase();
+  const [, userFirebaseUpdate] = useFirebase(database.ref('users'));
 
   const getUserTokenData = useCallback(
     async (code: string) => {

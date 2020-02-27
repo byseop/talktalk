@@ -1,34 +1,21 @@
-import useDatabase from '../useDatabase';
+import { FirebaseError, database } from 'firebase';
 import { useEffect, useCallback, useReducer } from 'react';
 
 type useFirebaseStateTypes = {
   isOn: boolean;
   loading: boolean;
   data: any;
-  error: Error | null;
+  error: FirebaseError | null;
 };
 
-/**
- *
- *
- * @export
- * @param {string} [path]
- * @returns {([
- *   useFirebaseStateTypes,
- *   (value: Object, callback?: (() => void) | undefined) => void,
- *   firebase.database.Reference
- * ])}
- */
 export default function useFirebase(
-  path?: string
+  ref: database.Reference | database.Query,
+  event_type: database.EventType = 'value'
 ): [
   useFirebaseStateTypes,
   (value: Object, callback?: (() => void) | undefined) => void,
-  firebase.database.Reference
+  database.Reference | database.Query
 ] {
-  const database = useDatabase();
-  const ref = database.ref(path);
-
   const initialState: useFirebaseStateTypes = {
     isOn: false,
     loading: false,
@@ -47,7 +34,10 @@ export default function useFirebase(
     payload
   });
   const firebaseOff = () => ({ type: FIREBASE_OFF });
-  const firebaseError = (payload: Error) => ({ type: FIREBASE_ERROR, payload });
+  const firebaseError = (payload: FirebaseError) => ({
+    type: FIREBASE_ERROR,
+    payload
+  });
 
   type useFirebaseActionTypes =
     | ReturnType<typeof firebaseInitialize>
@@ -91,14 +81,25 @@ export default function useFirebase(
 
   const update = useCallback(
     (value: Object, callback?: () => void) => {
-      // if value is null, data will remove
-      ref.update(value, function(error) {
-        if (error) {
-          console.error(error);
-        } else {
-          callback?.();
-        }
-      });
+      //if value is null, data will remove
+      if ('queryParams_' in ref) {
+        (ref as database.Reference).update(value, function(error) {
+          if (error) {
+            console.error(error);
+          } else {
+            callback?.();
+          }
+        });
+      } else {
+        const reference = (ref as database.Query).ref;
+        reference.update(value, function(error) {
+          if (error) {
+            console.error(error);
+          } else {
+            callback?.();
+          }
+        });
+      }
     },
     [ref]
   );
@@ -106,11 +107,11 @@ export default function useFirebase(
   useEffect(() => {
     dispatch(firebaseInitialize());
     ref.on(
-      'value',
+      event_type,
       snapshot => {
         dispatch(firebaseListen(snapshot.val()));
       },
-      (error: Error) => {
+      (error: FirebaseError) => {
         if (error) {
           dispatch(firebaseError(error));
         }
@@ -123,6 +124,5 @@ export default function useFirebase(
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   return [firebaseState, update, ref];
 }
