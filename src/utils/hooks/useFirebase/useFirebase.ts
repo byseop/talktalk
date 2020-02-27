@@ -8,7 +8,24 @@ type useFirebaseStateTypes = {
   error: Error | null;
 };
 
-export default function useFirebase(path?: string) {
+/**
+ *
+ *
+ * @export
+ * @param {string} [path]
+ * @returns {([
+ *   useFirebaseStateTypes,
+ *   (value: Object, callback?: (() => void) | undefined) => void,
+ *   firebase.database.Reference
+ * ])}
+ */
+export default function useFirebase(
+  path?: string
+): [
+  useFirebaseStateTypes,
+  (value: Object, callback?: (() => void) | undefined) => void,
+  firebase.database.Reference
+] {
   const database = useDatabase();
   const ref = database.ref(path);
 
