@@ -7,6 +7,8 @@ import { useDispatch } from 'react-redux';
 import { loginStart } from 'src/modules/login';
 import { useSelector } from 'react-redux';
 import { RootState } from 'src/modules';
+import useFirebase from 'src/utils/hooks/useFirebase';
+import useDatabase from 'src/utils/hooks/useDatabase';
 
 export default function LoginContainer() {
   const location = useLocation();
@@ -16,6 +18,9 @@ export default function LoginContainer() {
   const dispatch = useDispatch();
 
   const [isLogin, setLogin] = useState<boolean>(false);
+
+  const database = useDatabase();
+  const [, userFirebaseUpdate] = useFirebase(database.ref('users'));
 
   const getUserTokenData = useCallback(
     async (code: string) => {
@@ -41,8 +46,11 @@ export default function LoginContainer() {
   }, [code, getUserTokenData]);
 
   useEffect(() => {
-    data && setLogin(true);
-  }, [data]);
+    if (data) {
+      setLogin(true);
+      userFirebaseUpdate({ [`user-${data.id}`]: data });
+    }
+  }, [data, userFirebaseUpdate]);
 
   return (
     <>

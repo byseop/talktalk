@@ -4,7 +4,7 @@ body {
   color: rgb(33, 37, 41);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(0.25turn, #a292c0, #353f94) no-repeat;
+  background: linear-gradient(0.25turn, #12b886, #c3fae8) no-repeat;
   min-width: 100vw;
   min-height: 100vh;
 }

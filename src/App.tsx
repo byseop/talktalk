@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import RouteContainer from './components/routes'
+import RouteContainer from './components/routes/main'
 const App = () => {
   return (
     <div>
