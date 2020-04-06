@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Button } from '@fluentui/react';
+import { DefaultButton, PrimaryButton } from '@fluentui/react';
 import { animated, useTransition } from 'react-spring';
 
 export type AlertPropsTypes = {
@@ -24,20 +24,20 @@ export default function Alert({
   confirmText,
   cancelText,
   handleCancel,
-  handleConfirm
+  handleConfirm,
 }: AlertPropsTypes) {
   const alertVisTransition = useTransition(visible, null, {
     from: { opacity: 0 },
     enter: { opacity: 1 },
     leave: { opacity: 0 },
-    config: { duration: 300 }
+    config: { duration: 300 },
   });
 
   const alertBoxTransition = useTransition(visible, null, {
     from: { opacity: 0, transform: 'translateY(100px) scale(0.5)' },
     enter: { opacity: 1, transform: 'translateY(0) scale(1)' },
     leave: { opacity: 0, transform: 'translateY(100px) scale(0.5)' },
-    config: { tension: 200, friction: 15 }
+    config: { tension: 200, friction: 15 },
   });
 
   return (
@@ -56,18 +56,19 @@ export default function Alert({
                   </div>
                   {children && <div className="alert_children">{children}</div>}
                   <div className="alert_buttons">
-                    <Button
+                    <PrimaryButton
                       className="confirm_button"
-                      content={confirmText}
                       onClick={handleConfirm}
-                      primary
-                    />
+                    >
+                      {confirmText}
+                    </PrimaryButton>
                     {cancelable && (
-                      <Button
+                      <DefaultButton
                         className="cancel_button"
-                        content={cancelText}
                         onClick={handleCancel}
-                      />
+                      >
+                        {cancelText}
+                      </DefaultButton>
                     )}
                   </div>
                 </animated.div>
@@ -90,7 +91,8 @@ const AlertBg = styled(animated.div)`
   display: flex;
   justify-content: center;
   align-items: center;
-  
+  z-index: 999999;
+
   .alert_box {
     max-width: 320px;
     width: 100%;
@@ -114,7 +116,7 @@ const AlertBg = styled(animated.div)`
 
     .alert_buttons {
       margin-top: 1.5rem;
-      
+
       button + button {
         margin-left: 1rem;
       }
