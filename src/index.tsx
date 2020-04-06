@@ -9,7 +9,6 @@ import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import rootReducer, { rootSaga } from './modules';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { Provider as FluentProvider, themes } from '@fluentui/react';
 import * as firebase from 'firebase/app';
 
 const {
@@ -45,9 +44,7 @@ sagaMiddleware.run(rootSaga);
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter basename={process.env.PUBLIC_URL}>
-      <FluentProvider theme={themes.teams}>
-        <App />
-      </FluentProvider>
+      <App />
     </BrowserRouter>
   </Provider>,
   document.getElementById('root')
