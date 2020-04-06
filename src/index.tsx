@@ -10,6 +10,9 @@ import createSagaMiddleware from 'redux-saga';
 import rootReducer, { rootSaga } from './modules';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import * as firebase from 'firebase/app';
+import { initializeIcons } from '@fluentui/react';
+
+initializeIcons(undefined, { disableWarnings: true });
 
 const {
   REACT_APP_FIREBASE_API_KEY,

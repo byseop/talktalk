@@ -61,7 +61,7 @@ export default function Menu({ user, handleLogout }: MenuPropsType) {
                       className="menu_list"
                       onClick={() => setSelectedMenu('chatroom')}
                     >
-                      <i className="fas fa-comments"></i> 채팅방
+                      <i className="fas fa-comments"></i> 대화
                     </li>
                     <li
                       className="menu_list"
