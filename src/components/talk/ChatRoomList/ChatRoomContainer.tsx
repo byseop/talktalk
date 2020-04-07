@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import ChatRoom from './ChatRoom';
-import { SelectableMenu } from '../types';
+import ChatRoomList from './ChatRoomList';
+import { SelectableMenu } from '../menu/types';
 import useFirebase from 'src/utils/hooks/useFirebase';
 import useDatabase from 'src/utils/hooks/useDatabase';
 
@@ -9,7 +9,7 @@ type ChatRoomContainerProps = {
 };
 
 
-export default function ChatRoomContainer({
+export default function ChatRoomListContainer({
   selectedMenu
 }: ChatRoomContainerProps) {
   const database = useDatabase();
@@ -17,5 +17,5 @@ export default function ChatRoomContainer({
   useEffect(() => {
     console.log(snapshot);
   }, [snapshot])
-  return <ChatRoom selectedMenu={selectedMenu} />;
+  return <ChatRoomList selectedMenu={selectedMenu} />;
 }

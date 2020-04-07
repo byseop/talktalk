@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import { animated, useTransition } from 'react-spring';
-import { SelectableMenu } from '../types';
+import { SelectableMenu } from '../menu/types';
 import { easeExpOut } from 'd3-ease';
 import {
   Dropdown,
@@ -59,7 +59,7 @@ type ChatRoomPropsTypes = {
 
 type selectedChatType = 'CHANNEL' | 'DIRECT-MESSAGE';
 
-export default function ChatRoom({ selectedMenu }: ChatRoomPropsTypes) {
+export default function ChatRoomList({ selectedMenu }: ChatRoomPropsTypes) {
   const [selectedType, setSelectedType] = useState<selectedChatType>('CHANNEL');
   const chatRoomTransition = useTransition(selectedMenu === 'chatroom', null, {
     from: {

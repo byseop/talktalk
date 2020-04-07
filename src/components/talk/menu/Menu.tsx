@@ -4,7 +4,7 @@ import { UserDataTypes } from 'src/modules/login/types';
 import { animated, useTransition } from 'react-spring';
 import { easeExpOut } from 'd3-ease';
 import AlertContainer from 'src/components/common/Alert';
-import ChatRoomContainer from './chatRoom';
+import ChatRoomContainer from '../ChatRoomList';
 import { SelectableMenu } from './types';
 import palette from 'src/styles/palette';
 
