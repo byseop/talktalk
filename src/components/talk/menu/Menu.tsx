@@ -6,11 +6,16 @@ import { easeExpOut } from 'd3-ease';
 import AlertContainer from 'src/components/common/Alert';
 import ChatRoomContainer from './chatRoom';
 import { SelectableMenu } from './types';
+import palette from 'src/styles/palette';
 
 type MenuPropsType = {
   user: UserDataTypes;
   handleLogout: () => void;
 };
+
+const {
+  teal: { primary }
+} = palette;
 
 export default function Menu({ user, handleLogout }: MenuPropsType) {
   const { login, name, avatar_url, html_url } = user;
@@ -106,7 +111,7 @@ const MenuWrap = styled.div`
 `;
 
 const MenuInner = styled(animated.div)`
-  background: #12b886;
+  background: ${primary};
   width: 100%;
   height: 100%;
   display: flex;
