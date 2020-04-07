@@ -1,2 +1,2 @@
-export { default } from './ChatRoomContainer';
-export * from './ChatRoomContainer';
+export { default } from './ChatRoomListContainer';
+export * from './ChatRoomListContainer';
