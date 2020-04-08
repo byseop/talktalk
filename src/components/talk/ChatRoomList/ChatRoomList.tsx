@@ -60,7 +60,7 @@ type ChatRoomPropsTypes = {
   selectedMenu: SelectableMenu;
 };
 
-type SelectedChatType = 'CHANNEL' | 'DIRECT-MESSAGE';
+export type SelectedChatType = 'CHANNEL' | 'DIRECT-MESSAGE';
 type SelectedPanel = 'CREATE_PANEL' | 'CHAT_PANEL';
 
 export default function ChatRoomList({ selectedMenu }: ChatRoomPropsTypes) {
@@ -76,11 +76,11 @@ export default function ChatRoomList({ selectedMenu }: ChatRoomPropsTypes) {
 
   const chatRoomTransition = useTransition(isSelectedMenuChatRoom, null, panel);
 
-  const createPanelTransition = useTransition(
-    isSelectedMenuChatRoom && selectedPanel === 'CREATE_PANEL',
-    null,
-    panel
-  );
+  // const createPanelTransition = useTransition(
+  //   isSelectedMenuChatRoom && selectedPanel === 'CREATE_PANEL',
+  //   null,
+  //   panel
+  // );
 
   const handleTypeChange = useCallback(
     (
@@ -116,12 +116,10 @@ export default function ChatRoomList({ selectedMenu }: ChatRoomPropsTypes) {
           </ChatRoomWrap>
         ) : null
       )}
-      {createPanelTransition.map(({ item: cItem, key: cKey, props: cProps }) =>
-        cItem ? (
-          <CreatorWrap key={cKey} style={cProps}>
-            <CreateChatRoomContainer />
-          </CreatorWrap>
-        ) : null
+      {isSelectedMenuChatRoom && selectedPanel === 'CREATE_PANEL' && (
+        <CreatorWrap>
+          <CreateChatRoomContainer />
+        </CreatorWrap>
       )}
     </>
   );
@@ -149,7 +147,7 @@ const CreatorWrap = styled(animated.div)`
   position: absolute;
   height: 100%;
   width: calc(100vw - 700px);
-  left: 0;
+  left: 700px;
   top: 0;
-  margin-left: 700px;
+  /* z-index: 20; */
 `;
