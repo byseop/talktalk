@@ -192,6 +192,7 @@ const createTypeOptions: IChoiceGroupOption[] = [
   },
   {
     key: 'DIRECT_MESSAGE',
-    text: '다이렉트 메세지'
+    text: '다이렉트 메세지',
+    disabled: true
   }
 ];

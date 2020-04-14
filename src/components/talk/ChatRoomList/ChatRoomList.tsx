@@ -11,6 +11,9 @@ import {
 } from '@fluentui/react';
 import CreateChatRoomContainer from './CreateChatRoom';
 import animation from 'src/styles/animation';
+import { ChatRoomTypes } from './ChatRoomListContainer';
+import ChatRoomListRowContainer from './ChatRoomListRow';
+import { ShimmerEl } from './ChatRoomListRow/ChatRoomListRow';
 
 const CHATROOM_SELECTION_OPTION: IDropdownOption[] = [
   {
@@ -58,12 +61,17 @@ const { panel } = animation;
 
 type ChatRoomPropsTypes = {
   selectedMenu: SelectableMenu;
+  chatInProgress: {
+    channels: ChatRoomTypes[];
+    directMessage: [];
+  };
+  loading: boolean;
 };
 
 export type SelectedChatType = 'CHANNEL' | 'DIRECT-MESSAGE';
 type SelectedPanel = 'CREATE_PANEL' | 'CHAT_PANEL';
 
-export default function ChatRoomList({ selectedMenu }: ChatRoomPropsTypes) {
+export default function ChatRoomList({ selectedMenu, chatInProgress, loading }: ChatRoomPropsTypes) {
   const [selectedType, setSelectedType] = useState<SelectedChatType>('CHANNEL');
   const [selectedPanel, setSelectedPanel] = useState<
     SelectedPanel | undefined
@@ -81,6 +89,17 @@ export default function ChatRoomList({ selectedMenu }: ChatRoomPropsTypes) {
   //   null,
   //   panel
   // );
+
+  const renderChatList = useMemo(() => {
+    switch(selectedType) {
+      case 'CHANNEL':
+        return chatInProgress.channels
+      case 'DIRECT-MESSAGE':
+        return chatInProgress.directMessage
+      default:
+        throw new Error(`Unhandled selected type '${selectedType}'`)
+    }
+  }, [chatInProgress, selectedType]);
 
   const handleTypeChange = useCallback(
     (
@@ -113,6 +132,10 @@ export default function ChatRoomList({ selectedMenu }: ChatRoomPropsTypes) {
                 onClick={() => setSelectedPanel('CREATE_PANEL')}
               />
             </div>
+            <div className="room_list">
+              {loading && <ShimmerEl />}
+              {renderChatList?.map(chat => <ChatRoomListRowContainer data={chat} key={chat.id} />)}
+            </div>
           </ChatRoomWrap>
         ) : null
       )}
@@ -140,6 +163,12 @@ const ChatRoomWrap = styled(animated.div)`
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+
+  .room_list {
+    border-top: 1px solid #868e96;
+    margin-top: 1rem;
+    padding-top: 1rem;
   }
 `;
 

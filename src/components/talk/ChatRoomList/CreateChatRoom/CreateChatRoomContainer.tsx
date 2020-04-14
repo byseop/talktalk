@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from 'react';
 import CreateChatRoom from './CreateChatRoom';
-import useFirebase from 'src/utils/hooks/useFirebase';
 import useDatabase from 'src/utils/hooks/useDatabase';
 import { SelectedChatType } from '../ChatRoomList';
 import { useSelector } from 'react-redux';
@@ -8,11 +7,8 @@ import { RootState } from 'src/modules';
 
 export default function CreateChatRoomContainer() {
   const database = useDatabase();
-  const [snapshot] = useFirebase(database.ref('channels'));
   const { user } = useSelector((state: RootState) => state);
   const [isComplete, setIsComplete] = useState<boolean>(false);
-
-  console.log(snapshot);
 
   const handleUpdate = useCallback(
     (
