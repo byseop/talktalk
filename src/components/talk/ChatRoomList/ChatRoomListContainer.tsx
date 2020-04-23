@@ -36,7 +36,7 @@ export default function ChatRoomListContainer({
   }, [channels]);
 
   const loading = useMemo<boolean>(() => {
-    if (!channels.loading /* && !dm loading */) return true;
+    if (channels.loading /* && !dm loading */) return true;
     return false;
   }, [channels.loading]);
 

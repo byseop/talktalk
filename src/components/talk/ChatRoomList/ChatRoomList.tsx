@@ -133,7 +133,7 @@ export default function ChatRoomList({ selectedMenu, chatInProgress, loading }: 
               />
             </div>
             <div className="room_list">
-              {loading && <ShimmerEl />}
+              {loading && <><ShimmerEl /><ShimmerEl /></>}
               {renderChatList?.map(chat => <ChatRoomListRowContainer data={chat} key={chat.id} />)}
             </div>
           </ChatRoomWrap>
