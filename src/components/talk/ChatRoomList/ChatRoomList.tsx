@@ -15,6 +15,8 @@ import { ChatRoomTypes } from './ChatRoomListContainer';
 import ChatRoomListRowContainer from './ChatRoomListRow';
 import { ShimmerEl } from './ChatRoomListRow/ChatRoomListRow';
 import ChatRoomContainer from './ChatRoom/ChatRoomContainer';
+import { useSelector } from 'react-redux';
+import { RootState } from 'src/modules';
 
 const CHATROOM_SELECTION_OPTION: IDropdownOption[] = [
   {
@@ -82,6 +84,8 @@ export default function ChatRoomList({
     SelectedPanel | undefined
   >();
 
+  const chat = useSelector((state: RootState) => state.chat);
+
   const isSelectedMenuChatRoom = useMemo(() => {
     if (selectedMenu === 'chatroom') return true;
     return false;
@@ -116,13 +120,17 @@ export default function ChatRoomList({
     []
   );
 
-  const handleJoinChat = useCallback(() => {
-    setSelectedPanel('CHAT_PANEL');
-  }, []);
-
   useEffect(() => {
     !isSelectedMenuChatRoom && setSelectedPanel(undefined);
   }, [isSelectedMenuChatRoom]);
+
+  useEffect(() => {
+    if (chat.isOpen) {
+      setSelectedPanel('CHAT_PANEL');
+    } else {
+      setSelectedPanel(undefined);
+    }
+  }, [chat]);
 
   return (
     <>
@@ -149,11 +157,7 @@ export default function ChatRoomList({
                 </>
               )}
               {renderChatList?.map((chat) => (
-                <ChatRoomListRowContainer
-                  data={chat}
-                  key={chat.id}
-                  handleJoinChat={handleJoinChat}
-                />
+                <ChatRoomListRowContainer data={chat} key={chat.id} />
               ))}
             </div>
           </ChatRoomWrap>
@@ -164,9 +168,7 @@ export default function ChatRoomList({
           <CreateChatRoomContainer />
         </CreatorWrap>
       )}
-      {selectedPanel === 'CHAT_PANEL' && (
-        <ChatRoomContainer />
-      )}
+      {selectedPanel === 'CHAT_PANEL' && <ChatRoomContainer />}
     </>
   );
 }

@@ -6,21 +6,20 @@ import palette from 'src/styles/palette';
 
 export type ChatRoomListRowPropsTypes = {
   data: ChatRoomTypes;
-  handleJoinChat: () => void;
+  open: () => void;
 };
 
-const ChatRoomListRow = memo(
-  ({ data, handleJoinChat }: ChatRoomListRowPropsTypes) => {
-    return (
-      <RowWrap onClick={handleJoinChat}>
-        <div className="chat_info">
-          <h3>{data.title}</h3>
-          <p>{data.des}</p>
-        </div>
-      </RowWrap>
-    );
-  }
-);
+const ChatRoomListRow = memo(({ data, open }: ChatRoomListRowPropsTypes) => {
+  console.log(data);
+  return (
+    <RowWrap onClick={open}>
+      <div className="chat_info">
+        <h3>{data.title}</h3>
+        <p>{data.des}</p>
+      </div>
+    </RowWrap>
+  );
+});
 
 export default ChatRoomListRow;
 

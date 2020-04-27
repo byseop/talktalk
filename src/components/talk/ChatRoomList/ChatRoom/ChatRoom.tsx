@@ -2,10 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import palette from 'src/styles/palette';
 
-export default function ChatRoom() {
-  return (
-    <ChatRoomWrap />
-  );
+export type ChatRoomPropsTypes = {
+  handleCloseChatroom: () => void;
+};
+
+export default function ChatRoom({
+  handleCloseChatroom
+}: ChatRoomPropsTypes) {
+  return <ChatRoomWrap></ChatRoomWrap>;
 }
 
 const ChatRoomWrap = styled.div`
@@ -15,4 +19,4 @@ const ChatRoomWrap = styled.div`
   right: 0;
   top: 0;
   background: ${palette.teal.tertiray};
-`
+`;

@@ -1,15 +1,22 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import ChatRoomListRow from './ChatRoomListRow';
 import { ChatRoomTypes } from '../ChatRoomListContainer';
+import { useDispatch } from 'react-redux';
+import { chatOpen } from 'src/modules/chatroom';
 
 export type ChatRoomListRowContainerPropsType = {
   data: ChatRoomTypes;
-  handleJoinChat: () => void;
 };
 
 const ChatRoomListRowContainer = memo(
-  ({ data, handleJoinChat }: ChatRoomListRowContainerPropsType) => {
-    return <ChatRoomListRow data={data} handleJoinChat={handleJoinChat} />;
+  ({ data }: ChatRoomListRowContainerPropsType) => {
+    const dispatch = useDispatch();
+    
+    const open = useCallback(() => {
+      dispatch(chatOpen(data.id));
+    }, [data.id, dispatch]);
+
+    return <ChatRoomListRow data={data} open={open} />;
   }
 );
 
