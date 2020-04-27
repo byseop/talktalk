@@ -14,6 +14,7 @@ import animation from 'src/styles/animation';
 import { ChatRoomTypes } from './ChatRoomListContainer';
 import ChatRoomListRowContainer from './ChatRoomListRow';
 import { ShimmerEl } from './ChatRoomListRow/ChatRoomListRow';
+import ChatRoomContainer from './ChatRoom/ChatRoomContainer';
 
 const CHATROOM_SELECTION_OPTION: IDropdownOption[] = [
   {
@@ -71,7 +72,11 @@ type ChatRoomPropsTypes = {
 export type SelectedChatType = 'CHANNEL' | 'DIRECT-MESSAGE';
 type SelectedPanel = 'CREATE_PANEL' | 'CHAT_PANEL';
 
-export default function ChatRoomList({ selectedMenu, chatInProgress, loading }: ChatRoomPropsTypes) {
+export default function ChatRoomList({
+  selectedMenu,
+  chatInProgress,
+  loading
+}: ChatRoomPropsTypes) {
   const [selectedType, setSelectedType] = useState<SelectedChatType>('CHANNEL');
   const [selectedPanel, setSelectedPanel] = useState<
     SelectedPanel | undefined
@@ -91,13 +96,13 @@ export default function ChatRoomList({ selectedMenu, chatInProgress, loading }: 
   // );
 
   const renderChatList = useMemo(() => {
-    switch(selectedType) {
+    switch (selectedType) {
       case 'CHANNEL':
-        return chatInProgress.channels
+        return chatInProgress.channels;
       case 'DIRECT-MESSAGE':
-        return chatInProgress.directMessage
+        return chatInProgress.directMessage;
       default:
-        throw new Error(`Unhandled selected type '${selectedType}'`)
+        throw new Error(`Unhandled selected type '${selectedType}'`);
     }
   }, [chatInProgress, selectedType]);
 
@@ -110,6 +115,10 @@ export default function ChatRoomList({ selectedMenu, chatInProgress, loading }: 
     },
     []
   );
+
+  const handleJoinChat = useCallback(() => {
+    setSelectedPanel('CHAT_PANEL');
+  }, []);
 
   useEffect(() => {
     !isSelectedMenuChatRoom && setSelectedPanel(undefined);
@@ -133,8 +142,19 @@ export default function ChatRoomList({ selectedMenu, chatInProgress, loading }: 
               />
             </div>
             <div className="room_list">
-              {loading && <><ShimmerEl /><ShimmerEl /></>}
-              {renderChatList?.map(chat => <ChatRoomListRowContainer data={chat} key={chat.id} />)}
+              {loading && (
+                <>
+                  <ShimmerEl />
+                  <ShimmerEl />
+                </>
+              )}
+              {renderChatList?.map((chat) => (
+                <ChatRoomListRowContainer
+                  data={chat}
+                  key={chat.id}
+                  handleJoinChat={handleJoinChat}
+                />
+              ))}
             </div>
           </ChatRoomWrap>
         ) : null
@@ -143,6 +163,9 @@ export default function ChatRoomList({ selectedMenu, chatInProgress, loading }: 
         <CreatorWrap>
           <CreateChatRoomContainer />
         </CreatorWrap>
+      )}
+      {selectedPanel === 'CHAT_PANEL' && (
+        <ChatRoomContainer />
       )}
     </>
   );

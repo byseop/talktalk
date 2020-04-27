@@ -4,16 +4,23 @@ import styled from 'styled-components';
 import { Shimmer, IShimmerStyleProps, IShimmerStyles } from '@fluentui/react';
 import palette from 'src/styles/palette';
 
-const ChatRoomListRow = memo(({ data }: { data: ChatRoomTypes }) => {
-  return (
-    <RowWrap>
-      <div className="chat_info">
-        <h3>{data.title}</h3>
-        <p>{data.des}</p>
-      </div>
-    </RowWrap>
-  );
-});
+export type ChatRoomListRowPropsTypes = {
+  data: ChatRoomTypes;
+  handleJoinChat: () => void;
+};
+
+const ChatRoomListRow = memo(
+  ({ data, handleJoinChat }: ChatRoomListRowPropsTypes) => {
+    return (
+      <RowWrap onClick={handleJoinChat}>
+        <div className="chat_info">
+          <h3>{data.title}</h3>
+          <p>{data.des}</p>
+        </div>
+      </RowWrap>
+    );
+  }
+);
 
 export default ChatRoomListRow;
 
@@ -73,7 +80,7 @@ const RowWrap = styled.div`
     flex: 1;
     h3 {
       margin: 0;
-      font-weight: normal;
+      font-weight: 600;
       color: #555;
       font-size: 1.5rem;
     }
