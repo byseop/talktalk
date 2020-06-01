@@ -9,6 +9,8 @@ type ChatRoomContainerProps = {
   selectedMenu: SelectableMenu;
 };
 
+export type ChatroomDataTypes = ChatRoomTypes /* | DMTypes*/;
+
 export type ChatRoomTypes = {
   id: string;
   createDate: string;

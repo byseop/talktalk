@@ -94,7 +94,7 @@ export default function CreateChatRoom({
                       placeholder="간략한 설명을 입력해 주세요"
                       borderless
                       onGetErrorMessage={(value) =>
-                        validationLength(value, 300)
+                        validationLength(value, 100)
                       }
                       styles={{ ...inputStyle, ...multilineInputStyle }}
                       resizable={false}

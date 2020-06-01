@@ -1,25 +1,26 @@
 import { ChatActionTypes, CHAT_OPEN, CHAT_CLOSE } from './actions';
+import { ChatroomDataTypes } from 'src/components/talk/ChatRoomList';
 
 export type State = {
   isOpen: boolean;
-  id: string;
+  data: ChatroomDataTypes | null;
 };
 
 const initialState: State = {
   isOpen: false,
-  id: ''
+  data: null
 };
 
 export default function chat(
   state: State = initialState,
   action: ChatActionTypes
-) {
+): State {
   switch (action.type) {
     case CHAT_OPEN:
       return {
         ...state,
         isOpen: true,
-        id: action.payload
+        data: action.payload
       };
     case CHAT_CLOSE:
       return initialState;

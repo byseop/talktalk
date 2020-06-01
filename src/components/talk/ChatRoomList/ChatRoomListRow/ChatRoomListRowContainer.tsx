@@ -13,8 +13,8 @@ const ChatRoomListRowContainer = memo(
     const dispatch = useDispatch();
     
     const open = useCallback(() => {
-      dispatch(chatOpen(data.id));
-    }, [data.id, dispatch]);
+      dispatch(chatOpen(data));
+    }, [data, dispatch]);
 
     return <ChatRoomListRow data={data} open={open} />;
   }
