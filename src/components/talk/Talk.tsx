@@ -6,6 +6,7 @@ import { UserDataTypes } from 'src/modules/login/types';
 const TalkWrap = styled.div`
   .side_menu {
     height: 100vh;
+    position: relative;
   }
 `;
 

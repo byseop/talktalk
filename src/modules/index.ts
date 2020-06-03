@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux';
 import user, { loginSaga } from './login';
+import chat from './chatroom';
 import { all } from 'redux-saga/effects';
 
 const rootReducer = combineReducers({
   user,
+  chat
 });
 
 export function* rootSaga() {
