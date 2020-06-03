@@ -1,39 +1,48 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
+import { useSelector } from 'react-redux';
+import { RootState } from 'src/modules';
 
 export type ChatDataTypes = {
-  type: 'MINE' | 'OPPONENT';
-  text: string;
+  message: string;
   time: Date;
+  userInfo: {
+    id: number;
+    name: string;
+    avartar: string;
+  };
+  chatId: string;
 };
 
-const dummyMine: ChatDataTypes = {
-  type: 'MINE',
-  text: 'HIHIHI',
-  time: new Date()
-};
-const dummyOpponent: ChatDataTypes = {
-  type: 'OPPONENT',
-  text: 'OPP!!!',
-  time: new Date()
-};
-
-export default function ChatScreen() {
+export default function ChatScreen({ chatData }: { chatData: any }) {
+  const data: ChatDataTypes[] | undefined =
+    chatData && ((Object.values(chatData) as unknown) as ChatDataTypes[]);
+  const { user } = useSelector((state: RootState) => state);
+  const userId = useMemo<number | undefined>(() => {
+    return user.data?.id;
+  }, [user]);
   return (
     <ChatScreenCon>
-      <Chat chatData={dummyMine} />
-      <Chat chatData={dummyOpponent} />
+      {userId && data?.map((chat) => (
+        <Chat chatData={chat} key={chat.chatId} userId={userId} />
+      ))}
     </ChatScreenCon>
   );
 }
 
-function Chat({ chatData }: { chatData: ChatDataTypes }) {
-  const { type, text, time } = chatData;
+function Chat({
+  chatData,
+  userId
+}: {
+  chatData: ChatDataTypes;
+  userId: number;
+}) {
+  const { message, time, userInfo } = chatData;
   return (
-    <SpeechBubble className={type === 'MINE' ? 'mine' : 'oppo'}>
+    <SpeechBubble className={userId === userInfo.id ? 'mine' : 'oppo'}>
       <div className="bubble">
-        <span>{text}</span>
+        <span>{message}</span>
         <div className="time">{moment(time).format('M월 D일 HH시 MM분')}</div>
       </div>
     </SpeechBubble>

@@ -1,7 +1,7 @@
 import { FirebaseError, database } from 'firebase';
 import { useEffect, useCallback, useReducer } from 'react';
 
-type useFirebaseStateTypes = {
+export type useFirebaseStateTypes = {
   isOn: boolean;
   loading: boolean;
   data: any;
