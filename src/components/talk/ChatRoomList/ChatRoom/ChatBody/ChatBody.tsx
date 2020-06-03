@@ -11,10 +11,10 @@ export default function ChatBody({ id }: ChatBodyPropsTypes) {
   return (
     <ChatBodyWrap>
       <div className="chat_screen">
-        <ChatSceenContainer />
+        <ChatSceenContainer id={id} />
       </div>
       <div className="input_wrap">
-        <ChatInputContainer />
+        <ChatInputContainer id={id} />
       </div>
     </ChatBodyWrap>
   );
