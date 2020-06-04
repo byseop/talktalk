@@ -15,7 +15,13 @@ export type ChatDataTypes = {
   chatId: string;
 };
 
-export default function ChatScreen({ chatData }: { chatData: any }) {
+export default function ChatScreen({
+  chatData,
+  more
+}: {
+  chatData: any;
+  more: () => void;
+}) {
   const data: ChatDataTypes[] | undefined =
     chatData && ((Object.values(chatData) as unknown) as ChatDataTypes[]);
   const { user } = useSelector((state: RootState) => state);
@@ -24,38 +30,57 @@ export default function ChatScreen({ chatData }: { chatData: any }) {
   }, [user]);
   return (
     <ChatScreenCon>
-      {userId && data?.map((chat) => (
-        <Chat chatData={chat} key={chat.chatId} userId={userId} />
-      ))}
+      {data && (
+        <button className="more" type="button" onClick={more}>
+          더 보기
+        </button>
+      )}
+      {userId &&
+        data?.map((chat) => (
+          <Chat chatData={chat} key={chat.chatId} userId={userId} />
+        ))}
     </ChatScreenCon>
   );
 }
 
-const Chat = memo(({
-  chatData,
-  userId
-}: {
-  chatData: ChatDataTypes;
-  userId: number;
-}) => {
-  const { message, time, userInfo } = chatData;
-  return (
-    <SpeechBubble className={userId === userInfo.id ? 'mine' : 'oppo'}>
-      <div className="profile">
-        <div className="avartar"><img src={userInfo.avartar} alt={userInfo.name} /></div>
-        <span className="name">{userInfo.name}</span>
-      </div>
-      <div className="bubble">
-        <span>{message}</span>
-        <div className="time">{moment(time).format('M월 D일 HH시 mm분')}</div>
-      </div>
-    </SpeechBubble>
-  );
-});
+const Chat = memo(
+  ({ chatData, userId }: { chatData: ChatDataTypes; userId: number }) => {
+    const { message, time, userInfo } = chatData;
+    return (
+      <SpeechBubble className={userId === userInfo.id ? 'mine' : 'oppo'}>
+        <div className="profile">
+          <div className="avartar">
+            <img src={userInfo.avartar} alt={userInfo.name} />
+          </div>
+          <span className="name">{userInfo.name}</span>
+        </div>
+        <div className="bubble">
+          <span>{message}</span>
+          <div className="time">{moment(time).format('M월 D일 HH시 mm분')}</div>
+        </div>
+      </SpeechBubble>
+    );
+  }
+);
 
 const ChatScreenCon = styled.div`
   display: flex;
   flex-flow: column;
+  position: relative;
+
+  .more {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #96f2d7;
+    border-radius: 0.4rem;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.12);
+    padding: 0.24rem 1.2rem;
+    color: #333;
+    border: none;
+    cursor: pointer;
+  }
 `;
 
 const SpeechBubble = styled.div`
