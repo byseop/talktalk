@@ -83,5 +83,6 @@ const ChatRoomWrap = styled.div`
 
   .chat_body {
     flex: 1;
+    max-height: calc(100% - 8rem);
   }
 `;
