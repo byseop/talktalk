@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, memo } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
 import { useSelector } from 'react-redux';
@@ -15,7 +15,13 @@ export type ChatDataTypes = {
   chatId: string;
 };
 
-export default function ChatScreen({ chatData }: { chatData: any }) {
+export default function ChatScreen({
+  chatData,
+  more
+}: {
+  chatData: any;
+  more: () => void;
+}) {
   const data: ChatDataTypes[] | undefined =
     chatData && ((Object.values(chatData) as unknown) as ChatDataTypes[]);
   const { user } = useSelector((state: RootState) => state);
@@ -24,40 +30,65 @@ export default function ChatScreen({ chatData }: { chatData: any }) {
   }, [user]);
   return (
     <ChatScreenCon>
-      {userId && data?.map((chat) => (
-        <Chat chatData={chat} key={chat.chatId} userId={userId} />
-      ))}
+      {data && (
+        <button className="more" type="button" onClick={more}>
+          더 보기
+        </button>
+      )}
+      {userId &&
+        data?.map((chat) => (
+          <Chat chatData={chat} key={chat.chatId} userId={userId} />
+        ))}
     </ChatScreenCon>
   );
 }
 
-function Chat({
-  chatData,
-  userId
-}: {
-  chatData: ChatDataTypes;
-  userId: number;
-}) {
-  const { message, time, userInfo } = chatData;
-  return (
-    <SpeechBubble className={userId === userInfo.id ? 'mine' : 'oppo'}>
-      <div className="bubble">
-        <span>{message}</span>
-        <div className="time">{moment(time).format('M월 D일 HH시 MM분')}</div>
-      </div>
-    </SpeechBubble>
-  );
-}
+const Chat = memo(
+  ({ chatData, userId }: { chatData: ChatDataTypes; userId: number }) => {
+    const { message, time, userInfo } = chatData;
+    return (
+      <SpeechBubble className={userId === userInfo.id ? 'mine' : 'oppo'}>
+        <div className="profile">
+          <div className="avartar">
+            <img src={userInfo.avartar} alt={userInfo.name} />
+          </div>
+          <span className="name">{userInfo.name}</span>
+        </div>
+        <div className="bubble">
+          <span>{message}</span>
+          <div className="time">{moment(time).format('M월 D일 HH시 mm분')}</div>
+        </div>
+      </SpeechBubble>
+    );
+  }
+);
 
 const ChatScreenCon = styled.div`
   display: flex;
   flex-flow: column;
+  position: relative;
+
+  .more {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #96f2d7;
+    border-radius: 0.4rem;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.12);
+    padding: 0.24rem 1.2rem;
+    color: #333;
+    border: none;
+    cursor: pointer;
+  }
 `;
 
 const SpeechBubble = styled.div`
   display: flex;
+  flex-flow: column;
+  align-items: flex-start;
   &.mine {
-    justify-content: flex-end;
+    align-items: flex-end;
     .bubble {
       background: #fff;
       .time {
@@ -66,13 +97,30 @@ const SpeechBubble = styled.div`
         margin-right: 0.5rem;
       }
     }
+    .profile {
+      .name {
+        order: -1;
+      }
+    }
+
+    & + .mine {
+      .profile {
+        display: none;
+      }
+    }
+  }
+  &.oppo {
+    & + .oppo {
+      display: none;
+    }
   }
   .bubble {
     max-width: 40%;
     font-size: 1rem;
     border-radius: 0.4rem;
     box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.12);
-    padding: 0.5rem;
+    padding: 0.7rem;
+    margin: 0 1rem;
     background: #96f2d7;
     position: relative;
 
@@ -88,5 +136,29 @@ const SpeechBubble = styled.div`
   }
   & + & {
     margin-top: 1rem;
+  }
+
+  .profile {
+    display: flex;
+    margin-bottom: 1rem;
+    align-items: center;
+    .avartar {
+      width: 50px;
+      height: 50px;
+      border-radius: 100%;
+      position: relative;
+      overflow: hidden;
+      img {
+        width: 100%;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+    .name {
+      font-size: 1rem;
+      margin: 0 1rem;
+    }
   }
 `;

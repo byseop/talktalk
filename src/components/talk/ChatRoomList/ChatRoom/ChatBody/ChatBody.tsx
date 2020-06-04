@@ -24,16 +24,19 @@ const ChatBodyWrap = styled.div`
   display: flex;
   flex-flow: column wrap;
   height: 100%;
-  padding: 0 2rem 1rem;
+  padding-bottom: 2rem;
   box-sizing: border-box;
 
   .chat_screen {
     flex: 1;
+    overflow: auto;
+    padding: 0 2rem 2rem;
   }
 
   .input_wrap {
     height: 6rem;
     display: flex;
+    padding: 0 2rem;
 
     textarea {
       display: flex;
