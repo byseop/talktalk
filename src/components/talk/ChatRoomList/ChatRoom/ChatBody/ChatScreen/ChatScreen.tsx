@@ -17,10 +17,12 @@ export type ChatDataTypes = {
 
 export default function ChatScreen({
   chatData,
-  more
+  more,
+  isShowMore
 }: {
   chatData: any;
   more: () => void;
+  isShowMore: boolean;
 }) {
   const data: ChatDataTypes[] | undefined =
     chatData && ((Object.values(chatData) as unknown) as ChatDataTypes[]);
@@ -30,7 +32,7 @@ export default function ChatScreen({
   }, [user]);
   return (
     <ChatScreenCon>
-      {data && (
+      {data && isShowMore && (
         <button className="more" type="button" onClick={more}>
           더 보기
         </button>
