@@ -37,7 +37,6 @@ export default function ChatScreenContainer({ id }: { id: string }) {
 
   useEffect(() => {
     downloadChats();
-
     return () => offChats();
   }, [downloadChats, offChats]);
 
