@@ -1,4 +1,4 @@
-import React, { useMemo, memo } from 'react';
+import React, { useMemo, memo, useEffect } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
 import { useSelector } from 'react-redux';
@@ -17,8 +17,12 @@ export type ChatDataTypes = {
 
 export default function ChatScreen({
   chatData,
+  isControlMode,
+  fixedHeight
 }: {
   chatData: any;
+  isControlMode: boolean;
+  fixedHeight: number;
 }) {
   const data: ChatDataTypes[] | undefined =
     chatData && ((Object.values(chatData) as unknown) as ChatDataTypes[]);
@@ -26,6 +30,21 @@ export default function ChatScreen({
   const userId = useMemo<number | undefined>(() => {
     return user.data?.id;
   }, [user]);
+
+  useEffect(() => {
+    const el = document.getElementById('screen');
+    if (el && !isControlMode) {
+      el.scrollTop = el.scrollHeight;
+    }
+  }, [chatData, isControlMode]);
+
+  useEffect(() => {
+    const el = document.getElementById('screen');
+    if (el) {
+      el.scrollTop = el.scrollHeight - fixedHeight;
+    }
+  }, [fixedHeight, chatData])
+
   return (
     <ChatScreenCon>
       {userId &&
