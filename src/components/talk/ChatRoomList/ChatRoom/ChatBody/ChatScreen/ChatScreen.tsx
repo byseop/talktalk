@@ -1,4 +1,4 @@
-import React, { useMemo, memo } from 'react';
+import React, { useMemo, memo, useEffect } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
 import { useSelector } from 'react-redux';
@@ -17,10 +17,12 @@ export type ChatDataTypes = {
 
 export default function ChatScreen({
   chatData,
-  more
+  isControlMode,
+  fixedHeight
 }: {
   chatData: any;
-  more: () => void;
+  isControlMode: boolean;
+  fixedHeight: number;
 }) {
   const data: ChatDataTypes[] | undefined =
     chatData && ((Object.values(chatData) as unknown) as ChatDataTypes[]);
@@ -28,13 +30,23 @@ export default function ChatScreen({
   const userId = useMemo<number | undefined>(() => {
     return user.data?.id;
   }, [user]);
+
+  useEffect(() => {
+    const el = document.getElementById('screen');
+    if (el && !isControlMode) {
+      el.scrollTop = el.scrollHeight;
+    }
+  }, [chatData, isControlMode]);
+
+  useEffect(() => {
+    const el = document.getElementById('screen');
+    if (el) {
+      el.scrollTop = el.scrollHeight - fixedHeight;
+    }
+  }, [fixedHeight, chatData])
+
   return (
     <ChatScreenCon>
-      {data && (
-        <button className="more" type="button" onClick={more}>
-          더 보기
-        </button>
-      )}
       {userId &&
         data?.map((chat) => (
           <Chat chatData={chat} key={chat.chatId} userId={userId} />
@@ -47,7 +59,7 @@ const Chat = memo(
   ({ chatData, userId }: { chatData: ChatDataTypes; userId: number }) => {
     const { message, time, userInfo } = chatData;
     return (
-      <SpeechBubble className={userId === userInfo.id ? 'mine' : 'oppo'}>
+      <SpeechBubble className={`chat_line ${userId === userInfo.id ? 'mine' : 'oppo'}`} data-chat-id={chatData.chatId}>
         <div className="profile">
           <div className="avartar">
             <img src={userInfo.avartar} alt={userInfo.name} />

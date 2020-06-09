@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import ChatInputContainer from './ChatInput';
 import ChatSceenContainer from './ChatScreen';
@@ -8,10 +8,25 @@ export type ChatBodyPropsTypes = {
 };
 
 export default function ChatBody({ id }: ChatBodyPropsTypes) {
+  const [isControlMode, setIsControlMode] = useState<boolean>(false);
+  const handleWheel = useCallback((e: React.WheelEvent<HTMLDivElement>) => {
+    if (
+      e.currentTarget.scrollTop <
+      e.currentTarget.scrollHeight - e.currentTarget.clientHeight
+    ) {
+      setIsControlMode(true);
+    } else if (
+      e.currentTarget.scrollTop ===
+      e.currentTarget.scrollHeight - e.currentTarget.clientHeight
+    ) {
+      setIsControlMode(false);
+    }
+  }, []);
+
   return (
     <ChatBodyWrap>
-      <div className="chat_screen">
-        <ChatSceenContainer id={id} />
+      <div className={`chat_screen ${!isControlMode && 'smooth'}`} id="screen" onWheel={handleWheel}>
+        <ChatSceenContainer id={id} isControlMode={isControlMode} setIsControlMode={setIsControlMode} />
       </div>
       <div className="input_wrap">
         <ChatInputContainer id={id} />
@@ -31,6 +46,9 @@ const ChatBodyWrap = styled.div`
     flex: 1;
     overflow: auto;
     padding: 0 2rem 2rem;
+    &.smooth {
+      scroll-behavior: smooth;
+    }
   }
 
   .input_wrap {

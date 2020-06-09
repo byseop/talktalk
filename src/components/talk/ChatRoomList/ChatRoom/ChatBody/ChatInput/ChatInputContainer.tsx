@@ -22,7 +22,9 @@ export default function ChatInputContainer({ id }: { id: string }) {
         time: new Date(),
         chatId: newKey
       }, (error) => {
-        console.error(error);
+        if (error) {
+          console.error(error);
+        }
       });
     },
     [database, data, id]
