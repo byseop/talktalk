@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 import ChatInputContainer from './ChatInput';
 import ChatSceenContainer from './ChatScreen';
@@ -8,9 +8,10 @@ export type ChatBodyPropsTypes = {
 };
 
 export default function ChatBody({ id }: ChatBodyPropsTypes) {
+  const screenRef = useRef<HTMLDivElement>(null);
   return (
     <ChatBodyWrap>
-      <div className="chat_screen">
+      <div className="chat_screen" id="screen" ref={screenRef}>
         <ChatSceenContainer id={id} />
       </div>
       <div className="input_wrap">

@@ -10,7 +10,6 @@ export type ChatRoomListRowPropsTypes = {
 };
 
 const ChatRoomListRow = memo(({ data, open }: ChatRoomListRowPropsTypes) => {
-  console.log(data);
   return (
     <RowWrap onClick={open}>
       <div className="chat_info">
