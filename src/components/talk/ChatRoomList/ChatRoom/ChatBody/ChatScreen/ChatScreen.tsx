@@ -18,11 +18,9 @@ export type ChatDataTypes = {
 export default function ChatScreen({
   chatData,
   isControlMode,
-  fixedHeight
 }: {
   chatData: any;
   isControlMode: boolean;
-  fixedHeight: number;
 }) {
   const data: ChatDataTypes[] | undefined =
     chatData && ((Object.values(chatData) as unknown) as ChatDataTypes[]);
@@ -38,13 +36,6 @@ export default function ChatScreen({
     }
   }, [chatData, isControlMode]);
 
-  useEffect(() => {
-    const el = document.getElementById('screen');
-    if (el) {
-      el.scrollTop = el.scrollHeight - fixedHeight;
-    }
-  }, [fixedHeight, chatData])
-
   return (
     <ChatScreenCon>
       {userId &&
@@ -59,7 +50,10 @@ const Chat = memo(
   ({ chatData, userId }: { chatData: ChatDataTypes; userId: number }) => {
     const { message, time, userInfo } = chatData;
     return (
-      <SpeechBubble className={`chat_line ${userId === userInfo.id ? 'mine' : 'oppo'}`} data-chat-id={chatData.chatId}>
+      <SpeechBubble
+        className={`chat_line ${userId === userInfo.id ? 'mine' : 'oppo'}`}
+        data-chat-id={chatData.chatId}
+      >
         <div className="profile">
           <div className="avartar">
             <img src={userInfo.avartar} alt={userInfo.name} />
@@ -123,7 +117,9 @@ const SpeechBubble = styled.div`
   }
   &.oppo {
     & + .oppo {
-      display: none;
+      .profile {
+        display: none;
+      }
     }
   }
   .bubble {

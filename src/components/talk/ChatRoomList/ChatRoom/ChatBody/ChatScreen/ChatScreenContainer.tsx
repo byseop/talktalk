@@ -16,9 +16,7 @@ export default function ChatScreenContainer({
   const [chatData, setChatData] = useState();
   const [chatCount, setChatCount] = useState<number>(30);
   const [snapshotCount, setSnapshotCount] = useState<number>();
-  const [observeTarget, setObserverTarget] = useState<Element>();
-  const [fixedHeight, setFixedHeight] = useState<number>();
-  const [delay, setDelay] = useState<boolean>(false);
+  const [observeTarget, setObserverTarget] = useState<HTMLElement>();
 
   const downloadChats = useCallback(() => {
     db.ref(`chats/chat${id}`)
@@ -30,9 +28,17 @@ export default function ChatScreenContainer({
           const firstData =
             snapshot.val() &&
             (Object.values(snapshot.val())[0] as ChatDataTypes);
-          document.querySelectorAll('.chat_line').forEach((element) => {
+          (document.querySelectorAll('.chat_line') as NodeListOf<
+            HTMLElement
+          >).forEach((element: HTMLElement) => {
             if (element.getAttribute('data-chat-id') === firstData.chatId) {
-              setObserverTarget(element);
+              setObserverTarget((prevState) => {
+                const screen = document.getElementById('screen');
+                if (screen && prevState && screen.scrollTop === 0) {
+                  screen.scrollTop = prevState.offsetTop;
+                }
+                return element;
+              });
             }
           });
           setSnapshotCount(snapshot.numChildren());
@@ -55,17 +61,19 @@ export default function ChatScreenContainer({
 
   const onIntersect = useCallback(
     ([entry]: IntersectionObserverEntry[]) => {
-      if (entry.isIntersecting && !delay) {
+      if (entry.isIntersecting) {
         const el = document.getElementById('screen');
-        if (snapshotCount && snapshotCount > 0 && snapshotCount === chatCount && el) {
-          const height = el.scrollHeight;
-          setFixedHeight(height);
+        if (
+          snapshotCount &&
+          snapshotCount > 0 &&
+          snapshotCount === chatCount &&
+          el
+        ) {
           more();
-          setDelay(true);
         }
       }
     },
-    [more, snapshotCount, chatCount, delay]
+    [more, snapshotCount, chatCount]
   );
 
   useEffect(() => {
@@ -94,14 +102,5 @@ export default function ChatScreenContainer({
     setIsControlMode(false);
   }, [id, setIsControlMode]);
 
-  useEffect(() => {
-    // 연속 불러오기 방지
-    if (delay) {
-      setTimeout(() => {
-        setDelay((d) => !d);
-      }, 1000)
-    }
-  }, [delay]);
-
-  return <ChatScreen chatData={chatData} isControlMode={isControlMode} fixedHeight={fixedHeight as number} />;
+  return <ChatScreen chatData={chatData} isControlMode={isControlMode} />;
 }
