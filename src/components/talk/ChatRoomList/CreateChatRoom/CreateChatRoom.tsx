@@ -28,10 +28,18 @@ export default function CreateChatRoom({
   const [selectedCreateType, setSelectedCreateType] = useState<
     SelectedChatType
   >('CHANNEL');
+  const [isError, setIsError] = useState<boolean>(false);
 
   const validationLength = useCallback((value: any, count: number) => {
-    if (typeof value !== 'string') return '입력이 올바르지 않습니다.';
-    if (value.length > count) return `${count}자 이내로 작성해 주세요.`;
+    if (typeof value !== 'string') {
+      setIsError(true);
+      return '입력이 올바르지 않습니다.'
+    };
+    if (value.length > count) {
+      setIsError(true);
+      return `${count}자 이내로 작성해 주세요.`
+    };
+    setIsError(false);
   }, []);
 
   const [formData, setFormData] = useState({ title: '', des: '' });
@@ -56,6 +64,8 @@ export default function CreateChatRoom({
     },
     [formData]
   );
+
+  console.log(isError);
 
   return (
     <>
@@ -107,6 +117,7 @@ export default function CreateChatRoom({
                 <PrimaryButton
                   text="만들기"
                   onClick={() => update(selectedCreateType, formData)}
+                  disabled={isError}
                 />
               </div>
             </div>

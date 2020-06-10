@@ -81,6 +81,7 @@ const RowWrap = styled.div`
       font-weight: 600;
       color: #555;
       font-size: 1.5rem;
+      word-break: break-all;
     }
     p {
       margin: 10px 0 0;
