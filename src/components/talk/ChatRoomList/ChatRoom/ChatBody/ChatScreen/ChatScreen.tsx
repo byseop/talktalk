@@ -131,6 +131,7 @@ const SpeechBubble = styled.div`
     margin: 0 1rem;
     background: #96f2d7;
     position: relative;
+    word-break: break-all;
 
     .time {
       position: absolute;
