@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useMemo } from 'react';
 import styled from 'styled-components';
 import palette from 'src/styles/palette';
 import {
@@ -28,19 +28,36 @@ export default function CreateChatRoom({
   const [selectedCreateType, setSelectedCreateType] = useState<
     SelectedChatType
   >('CHANNEL');
-  const [isError, setIsError] = useState<boolean>(false);
+  const [isError, setIsError] = useState({
+    title: false,
+    des: false
+  });
+  const buttonDisabled = useMemo(() => {
+    for (const type in isError) {
+      if (isError[type as keyof typeof isError]) {
+        return true;
+      }
+    }
+    return false;
+  }, [isError]);
 
-  const validationLength = useCallback((value: any, count: number) => {
-    if (typeof value !== 'string') {
-      setIsError(true);
-      return '입력이 올바르지 않습니다.'
-    };
-    if (value.length > count) {
-      setIsError(true);
-      return `${count}자 이내로 작성해 주세요.`
-    };
-    setIsError(false);
-  }, []);
+  const validationLength = useCallback(
+    (value: any, count: number, type: string) => {
+      if (typeof value !== 'string') {
+        return '입력이 올바르지 않습니다.';
+      }
+      if (value.length > count) {
+        setIsError((prev) => {
+          return { ...prev, [type]: true };
+        });
+        return `${count}자 이내로 작성해 주세요.`;
+      }
+      setIsError((prev) => {
+        return { ...prev, [type]: false };
+      });
+    },
+    []
+  );
 
   const [formData, setFormData] = useState({ title: '', des: '' });
 
@@ -64,8 +81,6 @@ export default function CreateChatRoom({
     },
     [formData]
   );
-
-  console.log(isError);
 
   return (
     <>
@@ -92,7 +107,9 @@ export default function CreateChatRoom({
                       placeholder="제목을 입력해 주세요"
                       borderless
                       required
-                      onGetErrorMessage={(value) => validationLength(value, 50)}
+                      onGetErrorMessage={(value) =>
+                        validationLength(value, 50, 'title')
+                      }
                       styles={inputStyle}
                       onChange={handleChangeField}
                     />
@@ -104,7 +121,7 @@ export default function CreateChatRoom({
                       placeholder="간략한 설명을 입력해 주세요"
                       borderless
                       onGetErrorMessage={(value) =>
-                        validationLength(value, 100)
+                        validationLength(value, 100, 'des')
                       }
                       styles={{ ...inputStyle, ...multilineInputStyle }}
                       resizable={false}
@@ -117,7 +134,7 @@ export default function CreateChatRoom({
                 <PrimaryButton
                   text="만들기"
                   onClick={() => update(selectedCreateType, formData)}
-                  disabled={isError}
+                  disabled={buttonDisabled}
                 />
               </div>
             </div>
